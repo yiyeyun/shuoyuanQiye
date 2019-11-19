@@ -4,3 +4,10 @@ export function getQiniuToken() {
     url: `app/pic/token`
   })
 }
+export function getSmsCode(data) {
+  return request({
+    url: `app/sms/smsCode`,
+    method: 'post',
+    data
+  })
+}

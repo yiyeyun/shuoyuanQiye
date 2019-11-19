@@ -1,43 +1,43 @@
 <template>
   <div class="box">
-    <!--<div>欢迎登入亿业云商家后台管理系统</div>-->
-    <div class="font-14-333 full-width mb20 flex">
-      <label> 关键词：<input v-model="keyword"></label>
+    <div>欢迎登入亿业云企业后台管理系统</div>
+    <!--<div class="font-14-333 full-width mb20 flex">-->
+      <!--<label> 关键词：<input v-model="keyword"></label>-->
 
-      <label> 经度：<input v-model="markerPo.lat"></label>
+      <!--<label> 经度：<input v-model="markerPo.lat"></label>-->
 
-      <label> 纬度：<input v-model="markerPo.lng"></label>
+      <!--<label> 纬度：<input v-model="markerPo.lng"></label>-->
 
-    </div>
+    <!--</div>-->
 
-    <baidu-map ak="ocjtpCpd3HusX9VUmkfc49P9jxRV5Vch" class="full-width relative" :scroll-wheel-zoom="true" @click="clickBmap">
+    <!--<baidu-map ak="ocjtpCpd3HusX9VUmkfc49P9jxRV5Vch" class="full-width relative" :scroll-wheel-zoom="true" @click="clickBmap">-->
 
-      <!--地图视图-->
-      <bm-view class="map" />
-      <!--显示更多-->
-      <div class="fix-right">
-        <div class="more_panel">
-        <span :class="{'down':isShowPanel}" class="mb10" @click.stop="showPanel">
-          <span>{{ isShowPanel?'隐藏':'显示' }}</span>搜索列表<i class="el-icon-d-arrow-right" />
-        </span>
-        </div>
-        <!--搜索-->
-        <bm-local-search
-          :keyword="keyword"
-          :panel="isShowPanel"
-          :auto-viewport="true"
-          :location="location"
-          @searchcomplete="searchcomplete"
-        />
-      </div>
-      <!--点标注-->
-      <!--<bm-marker :position="markerPo" :dragging="true" :title="storeName" :z-index="999999999" :icon="{url:markerIcon,size: {width: 34, height: 34}}" @click="infoWindowOpen" @dragend="dragend">-->
+      <!--&lt;!&ndash;地图视图&ndash;&gt;-->
+      <!--<bm-view class="map" />-->
+      <!--&lt;!&ndash;显示更多&ndash;&gt;-->
+      <!--<div class="fix-right">-->
+        <!--<div class="more_panel">-->
+        <!--<span :class="{'down':isShowPanel}" class="mb10" @click.stop="showPanel">-->
+          <!--<span>{{ isShowPanel?'隐藏':'显示' }}</span>搜索列表<i class="el-icon-d-arrow-right" />-->
+        <!--</span>-->
+        <!--</div>-->
+        <!--&lt;!&ndash;搜索&ndash;&gt;-->
+        <!--<bm-local-search-->
+          <!--:keyword="keyword"-->
+          <!--:panel="isShowPanel"-->
+          <!--:auto-viewport="true"-->
+          <!--:location="location"-->
+          <!--@searchcomplete="searchcomplete"-->
+        <!--/>-->
+      <!--</div>-->
+      <!--&lt;!&ndash;点标注&ndash;&gt;-->
+      <!--&lt;!&ndash;<bm-marker :position="markerPo" :dragging="true" :title="storeName" :z-index="999999999" :icon="{url:markerIcon,size: {width: 34, height: 34}}" @click="infoWindowOpen" @dragend="dragend">&ndash;&gt;-->
 
-      <!--<bm-info-window :show="isShowInfo" @close="infoWindowClose" @open="infoWindowOpen">{{ address }}</bm-info-window>-->
+      <!--&lt;!&ndash;<bm-info-window :show="isShowInfo" @close="infoWindowClose" @open="infoWindowOpen">{{ address }}</bm-info-window>&ndash;&gt;-->
 
-      <!--</bm-marker>-->
+      <!--&lt;!&ndash;</bm-marker>&ndash;&gt;-->
 
-    </baidu-map>
+    <!--</baidu-map>-->
   </div>
 </template>
 

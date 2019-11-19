@@ -13,40 +13,34 @@
         :unique-opened="true"
         @select="select"
       >
+        <el-menu-item index="2">
+          <template slot="title">
+            <i class="el-icon-menu" />
+            <span>账户信息</span>
+          </template>
+          <!--< index="/account">账户信息</>-->
+        </el-menu-item>
         <el-submenu index="1">
           <template slot="title">
             <i class="el-icon-goods" />
-            <span>模版管理</span>
+            <span>商品管理</span>
           </template>
-          <el-menu-item index="/model-manage">模版管理</el-menu-item>
+          <el-menu-item index="/goods-list">商品列表</el-menu-item>
         </el-submenu>
         <el-submenu index="2">
           <template slot="title">
             <i class="el-icon-menu" />
-            <span>订单管理</span>
+            <span>溯源管理</span>
           </template>
-          <el-menu-item index="/order-manage">订单管理</el-menu-item>
+          <el-menu-item index="/source">溯源管理</el-menu-item>
         </el-submenu>
-        <!--<el-submenu index="3">-->
-          <!--<template slot="title">-->
-            <!--<i class="el-icon-tickets" />-->
-            <!--<span>订单管理</span>-->
-          <!--</template>-->
-          <!--<el-menu-item index="3-1">订单管理</el-menu-item>-->
-        <!--</el-submenu>-->
-        <!--<el-submenu index="4">-->
-          <!--<template slot="title">-->
-            <!--<i class="el-icon-tickets" />-->
-            <!--<span>商家管理</span>-->
-          <!--</template>-->
-          <!--<el-menu-item index="/address">地址管理</el-menu-item>-->
-        <!--</el-submenu>-->
+
       </el-menu>
     </div>
 
     <div class="flex-1 flex flex-column over-hidden">
       <top class="bottom-line" :is-expend="isExpend" @onchange="isExpend = !isExpend" />
-      <div class="flex-1">
+      <div class="flex-1 over-auto">
         <router-view />
       </div>
     </div>
@@ -102,4 +96,7 @@ export default {
 /deep/ .el-menu{
   border-right: 1px solid @main-color;
 }
+  .over-auto{
+    overflow: auto;
+  }
 </style>

@@ -9,21 +9,17 @@ export default new Router({
       component: () => import('../views/login')
     },
     {
+      path: '/admin-data',
+      component: () => import('../views/login/admin-data')
+    },
+    {
       path: '/',
       component: () => import('../views/home'),
       children: [
         {
-          path: '',
-          component: () => import('@/views/home/default')
+          path: '/goods-list',
+          component: () => import('../views/goods/list')
         },
-        {
-          path: '/model-manage',
-          component: () => import('@/views/model-manage')
-        },
-        {
-          path: '/order-manage',
-          component: () => import('@/views/order-manage')
-        }
       ]
     }
   ]
