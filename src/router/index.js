@@ -20,6 +20,14 @@ export default new Router({
           path: '/goods-list',
           component: () => import('../views/goods/list')
         },
+        {
+          path: '/source',
+          component: () => import('../views/source/list')
+        },
+        {
+          path: '/map',
+          component: () => import('../views/source/list/map')
+        }
       ]
     }
   ]
