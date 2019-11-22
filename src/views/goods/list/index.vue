@@ -6,6 +6,7 @@
     <idol-table
       :list="list"
       @delete-item="deleteItem"
+      @source-handle="sourceHandle"
       @edit-item="editGoods"
     />
     <el-dialog
@@ -77,6 +78,7 @@ import {
   getGoodsList,
   getGoodsCategory,
   goodsHandle,
+  sourceIsOpen,
   goodsDelete
 } from '../../../api/goods'
 
@@ -116,6 +118,20 @@ export default {
     }
   },
   methods: {
+    async sourceHandle(data) {
+      try {
+        const id = data.id
+        const status = data.dpStatus === 1 ? 5 : 1
+        await sourceIsOpen({
+          dpStatus: status,
+          itemId: id
+        })
+        this.$message.success('操作成功')
+        this.getList()
+      } catch (e) {
+        console.log(e)
+      }
+    },
     async getList() {
       try {
         const list = await getGoodsList(this.params)

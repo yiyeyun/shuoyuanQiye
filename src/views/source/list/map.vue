@@ -68,8 +68,8 @@ export default {
         lng: 39.9, lat: 116.3
       },
       zoom: 3,
-      location: '北京',
-      keyword: '北京',
+      location: '',
+      keyword: '',
       markerPo: {
         lng: '', lat: ''
       },
@@ -127,6 +127,11 @@ export default {
       this.isShowPanel = true
     }
 
+  },
+  mounted() {
+    console.log(this.$route.query)
+    this.markerPo.lat = this.$route.query.lat
+    this.markerPo.lng = this.$route.query.lng
   }
 
 }

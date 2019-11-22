@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { Message } from 'element-ui'
+import router from '../router'
 // import store from '@/store'
 import { getToken } from '@/utils/auth'
 
@@ -47,6 +48,11 @@ service.interceptors.response.use(
         type: 'error',
         duration: 5 * 1000
       })
+      if (res.code === 20005) {
+        router.replace({
+          path: '/login'
+        })
+      }
       return Promise.reject(res)
     } else if (res.code !== 20000) {
 

@@ -44,3 +44,45 @@ export function submitHonor(data) {
     data
   })
 }
+
+export function getAreaGps(pid) {
+  return request({
+    url: `app/user/suoyuan/getProductAreaGPS/${pid}`,
+    method: 'post'
+  })
+}
+export function getTownInfo(pid) {
+  return request({
+    url: `app/user/suoyuan/getproductTownshipInfo/${pid}`,
+    method: 'post'
+  })
+}
+export function submitTownInfo(data) {
+  return request({
+    url: `app/user/suoyuan/productTownshipInfo`,
+    method: 'post',
+    data
+  })
+}
+
+export function subtmitDeepSource(data) {
+  return request({
+    url: `app/user/suoyuan/productDeepTraceabilityInfo`,
+    method: 'post',
+    data
+  })
+}
+
+export function getDeepSource(pid) {
+  return request({
+    url: `app/user/suoyuan/productDeepTraceabilityInfo/${pid}`,
+    method: 'post'
+  })
+}
+
+export function getSuyuanList({ pageNum, pageSize }) {
+  return request({
+    url: `app/user/suoyuan/selectSuoYuanList/${pageNum}/${pageSize}`,
+    method: 'post'
+  })
+}

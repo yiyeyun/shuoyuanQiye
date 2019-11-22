@@ -23,3 +23,11 @@ export function goodsDelete(id) {
     url: `app/user/product/delete/${id}`
   })
 }
+
+export function sourceIsOpen(data) {
+  return request({
+    url: `app/user/product/openTraceability`,
+    method: 'post',
+    data
+  })
+}

@@ -35,7 +35,6 @@
         </template>
       </el-table-column>
 
-
       <el-table-column
         prop="created"
         label="创建时间"
@@ -43,10 +42,16 @@
         width="160px"
       />
 
-      <el-table-column label="操作" align="center" width="160px">
+      <el-table-column label="操作" align="center" width="280px">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="editItem(scope.row)">编辑</el-button>
           <el-button type="danger" size="mini" @click="deleteItem(scope.row.id)">删除</el-button>
+          <el-button
+            v-show="scope.row.dpStatus"
+            type="danger"
+            size="mini"
+            @click="handle(scope.row)"
+          >{{ scope.row.dpStatus === 1 ?'开启溯源': '关闭溯源' }}</el-button>
 
         </template>
       </el-table-column>
@@ -74,6 +79,10 @@ export default {
 
     editItem(data) {
       this.$emit('edit-item', data)
+    },
+
+    handle(data) {
+      this.$emit('source-handle', data)
     },
 
     deleteItem(id) {

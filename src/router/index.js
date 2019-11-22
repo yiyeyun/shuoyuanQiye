@@ -27,6 +27,10 @@ export default new Router({
         {
           path: '/map',
           component: () => import('../views/source/list/map')
+        },
+        {
+          path: '/suyuan-list',
+          component: () => import('../views/source/suyuan')
         }
       ]
     }

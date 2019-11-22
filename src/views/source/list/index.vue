@@ -32,8 +32,8 @@
         </template>
       </el-table-column>
       <el-table-column label="乡镇信息">
-        <template>
-          <el-button type="primary" size="mini">编辑</el-button>
+        <template slot-scope="scope">
+          <el-button type="primary" size="mini" @click="townHandle(scope.row.id)">编辑</el-button>
         </template>
       </el-table-column>
       <el-table-column label="宣传视频">
@@ -42,8 +42,8 @@
         </template>
       </el-table-column>
       <el-table-column label="深度溯源">
-        <template>
-          <el-button type="primary" size="mini">编辑</el-button>
+        <template slot-scope="scope">
+          <el-button type="primary" size="mini" @click="deepSrouceHandle(scope.row.id)">编辑</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -79,6 +79,30 @@
         @close="honorParams.honorDialog = false"
       />
     </el-dialog>
+    <el-dialog
+      title="乡镇信息"
+      width="600px"
+      :visible.sync="townInfoParams.townDialog"
+    >
+      <town-info
+        :key-group="townInfoParams.townKeyData"
+        :value-group="townInfoParams.townValueData"
+        :item-id="townInfoParams.itemId"
+        @close="townInfoParams.townDialog = false"
+      />
+    </el-dialog>
+    <el-dialog
+      title="深度溯源"
+      width="800px"
+      :visible.sync="deepSourceParams.deepSourceDialog"
+    >
+      <deep-source
+        :type-group="deepSourceParams.typeGroup"
+        :type-value="deepSourceParams.typeValue"
+        :item-id="deepSourceParams.itemId"
+        @close="deepSourceParams.deepSourceDialog = false"
+      />
+    </el-dialog>
   </div>
 </template>
 
@@ -88,21 +112,40 @@ import {
 } from '../../../api/goods'
 import {
   getProductDescript,
+  getAreaGps,
+  getTownInfo,
+  getDeepSource,
   getProductHonor
 } from '../../../api/source'
 import video from './video'
 import descript from './descript'
+import deepSource from './deep-source'
+import townInfo from './town-info'
 import honor from './honor'
 export default {
   name: 'Index',
   components: {
     idolVideo: video,
     idolDescript: descript,
+    townInfo,
+    deepSource,
     idolHonor: honor
   },
   data() {
     return {
       pageTotal: 0,
+      townInfoParams: {
+        townDialog: false,
+        townKeyData: [],
+        itemId: '',
+        townValueData: []
+      },
+      deepSourceParams: {
+        deepSourceDialog: false,
+        itemId: '',
+        typeGroup: [],
+        typeValue: []
+      },
       videoParams: {
         videoDialog: false,
         itemId: ''
@@ -132,6 +175,30 @@ export default {
     this.getList()
   },
   methods: {
+    async deepSrouceHandle(id) {
+      this.deepSourceParams.deepSourceDialog = true
+      this.deepSourceParams.itemId = id
+      try {
+        let typeGroup = []
+        let typeValue = []
+        const data = await getDeepSource(id)
+        for (let key in data.data) {
+          typeGroup.push(key)
+          let keys = []
+          let value = []
+          console.log(666, data.data[key])
+          data.data[key].forEach((item, index) => {
+            keys.push(item.key)
+            value.push('')
+          })
+          typeValue.push([keys, value])
+        }
+        this.deepSourceParams.typeGroup = typeGroup
+        this.deepSourceParams.typeValue = typeValue
+      } catch (e) {
+        console.log(e)
+      }
+    },
     pageChange(page) {
       this.params.pageNum = page
       this.getList()
@@ -139,6 +206,23 @@ export default {
     videoHandle(id) {
       this.videoParams.itemId = id
       this.videoParams.videoDialog = true
+    },
+    async townHandle(id) {
+      this.townInfoParams.townDialog = true
+      this.townInfoParams.itemId = id
+      try {
+        const data = await getTownInfo(id)
+        this.townInfoParams.townKeyData = []
+        this.townInfoParams.townValueData = []
+        if (data.data.townshipMap) {
+          for (const key in data.data.townshipMap) {
+            this.townInfoParams.townKeyData.push(key)
+            this.townInfoParams.townValueData.push(data.data.townshipMap[key])
+          }
+        }
+      } catch (e) {
+        console.log(e)
+      }
     },
     async honorHandle(id) {
       this.honorParams.itemId = id
@@ -153,10 +237,15 @@ export default {
         console.log(e)
       }
     },
-    areaInfo(id) {
-      this.$router.push({
-        path: '/map?id=' + id
-      })
+    async areaInfo(id) {
+      try {
+        const info = await getAreaGps(id)
+        this.$router.push({
+          path: `/map?id=${id}&lat=${info.data.gpsLatitude}&lng=${info.data.gpsLongitude}`
+        })
+      } catch (e) {
+        console.log(e)
+      }
     },
     async descriptHandle(id) {
       this.descriptParams.itemId = id

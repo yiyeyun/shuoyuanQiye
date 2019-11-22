@@ -13,13 +13,13 @@
         :unique-opened="true"
         @select="select"
       >
-        <el-menu-item index="2">
-          <template slot="title">
-            <i class="el-icon-menu" />
-            <span>账户信息</span>
-          </template>
-          <!--< index="/account">账户信息</>-->
-        </el-menu-item>
+        <!--<el-menu-item index="2">-->
+          <!--<template slot="title">-->
+            <!--<i class="el-icon-menu" />-->
+            <!--<span>账户信息</span>-->
+          <!--</template>-->
+          <!--&lt;!&ndash;< index="/account">账户信息</>&ndash;&gt;-->
+        <!--</el-menu-item>-->
         <el-submenu index="1">
           <template slot="title">
             <i class="el-icon-goods" />
@@ -33,6 +33,7 @@
             <span>溯源管理</span>
           </template>
           <el-menu-item index="/source">溯源管理</el-menu-item>
+          <el-menu-item index="/suyuan-list">溯源列表</el-menu-item>
         </el-submenu>
 
       </el-menu>
