@@ -52,7 +52,6 @@
             size="mini"
             @click="handle(scope.row)"
           >{{ scope.row.dpStatus === 1 ?'开启溯源': '关闭溯源' }}</el-button>
-
         </template>
       </el-table-column>
     </el-table>
