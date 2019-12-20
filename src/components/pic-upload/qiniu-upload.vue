@@ -65,7 +65,7 @@ export default {
         key: '', // 图片名字处理
         token: '' // 七牛云token
       },
-      domain: 'http://up-z2.qiniup.com', // 七牛云的上传地址（华南区）
+      domain: 'https://up-z2.qiniup.com', // 七牛云的上传地址（华南区）
       // qiniuaddr: 'http://pze6q2d92.bkt.clouddn.com', // 七牛云的图片外链地址
       qiniuaddr: 'http://cdn.bjd33.cn', // 七牛云的图片外链地址
       uploadPicUrl: '', // 提交到后台图片地址,
@@ -100,6 +100,7 @@ export default {
   },
   mounted() {
     this.getQiniuToken()
+    console.log(this.fileList, 2222)
     this.list = this.fileList.map(item => {
       return {
         name: `pic_${parseInt(Math.random() * 10000)}.jpeg`,
@@ -109,9 +110,9 @@ export default {
   },
   methods: {
     handleRemove(file, fileList) {
-      const removePicUrl = `${this.qiniuaddr}/${file.response.key}`
-      console.log('remove', file, fileList)
-      this.$emit('remove', fileList)
+      // console.log('remove', file, fileList)
+      // const removePicUrl = `${this.qiniuaddr}/${file.name}`
+      this.$emit('remove', file.url)
     },
     handleExceed(files, fileList) {
       this.$message.warning(

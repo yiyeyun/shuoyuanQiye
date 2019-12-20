@@ -10,7 +10,7 @@
     </div>
     <div class="flex align-center">
       <!--<div class="avatar">{{ userInfo.storeName ? userInfo.storeName[0] : '' }}</div>-->
-      <!--<div class="font-14-999 mr20">您好！{{ userInfo.storeName }}</div>-->
+      <div class="font-14-999 mr20">您好！{{ loginData.uname }}</div>
       <div class="fa fa-sign-out" @click="logout" />
     </div>
   </div>
@@ -18,8 +18,10 @@
 
 <script>
 import {
-  removeToken
+  removeToken,
+  removeAccount
 } from '../../utils/auth'
+import Cookies from 'js-cookie'
 
 export default {
   name: 'Header',
@@ -30,8 +32,11 @@ export default {
   },
   data() {
     return {
-      userInfo: {}
+      loginData: {}
     }
+  },
+  mounted() {
+    this.loginData = JSON.parse(Cookies.get('loginData'))
   },
 
   methods: {
@@ -41,6 +46,7 @@ export default {
 
     logout() {
       removeToken()
+      removeAccount()
       this.$router.replace({
         path: '/login'
       })

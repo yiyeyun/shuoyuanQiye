@@ -13,28 +13,29 @@
         :unique-opened="true"
         @select="select"
       >
-        <!--<el-menu-item index="2">-->
-          <!--<template slot="title">-->
-            <!--<i class="el-icon-menu" />-->
-            <!--<span>账户信息</span>-->
-          <!--</template>-->
-          <!--&lt;!&ndash;< index="/account">账户信息</>&ndash;&gt;-->
-        <!--</el-menu-item>-->
-        <el-submenu index="1">
+        <el-submenu index="1" v-if="account == 2">
           <template slot="title">
             <i class="el-icon-goods" />
-            <span>商品管理</span>
+            <span>企业管理</span>
           </template>
-          <el-menu-item index="/goods-list">商品列表</el-menu-item>
+          <el-menu-item index="/company-list">企业列表</el-menu-item>
         </el-submenu>
-        <el-submenu index="2">
+        <el-submenu index="2" v-if="account == 2">
           <template slot="title">
             <i class="el-icon-menu" />
             <span>溯源管理</span>
           </template>
-          <el-menu-item index="/source">溯源管理</el-menu-item>
-          <el-menu-item index="/suyuan-list">溯源列表</el-menu-item>
+          <!--<el-menu-item index="/code-list">码包管理</el-menu-item>-->
+          <el-menu-item index="/tourism">旅游介绍</el-menu-item>
+          <el-menu-item index="/industry">产业介绍</el-menu-item>
         </el-submenu>
+        <el-menu-item index="/setting">
+          <template slot="title">
+            <i class="el-icon-tickets" />
+            <span>系统设置</span>
+          </template>
+          <!--<el-menu-item index="/account">客户列表</el-menu-item>-->
+        </el-menu-item>
 
       </el-menu>
     </div>
@@ -50,13 +51,22 @@
 
 <script>
 import top from './header'
+import {
+  getAccount
+} from '../../utils/auth'
+
 export default {
   name: 'Index',
   components: { top },
   data() {
     return {
-      isExpend: true
+      isExpend: true,
+      account: ''
     }
+  },
+  mounted() {
+    this.account = getAccount()
+    console.log(this.account)
   },
   methods: {
     select(path) {

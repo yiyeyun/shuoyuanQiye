@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function login(data) {
   return request({
-    url: `app/user/login/account`,
+    url: `account/groupLogin`,
     method: 'post',
     data
   })

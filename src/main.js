@@ -5,6 +5,7 @@ import 'normalize.css/normalize.css'
 import '@/assets/style/index.css'
 import 'viewerjs/dist/viewer.css'
 import './utils/md5'
+import './utils/permission'
 import Element from 'element-ui'
 import Viewer from 'v-viewer'
 

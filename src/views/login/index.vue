@@ -30,8 +30,10 @@
 
 <script>
 import {
-  setToken
+  setToken,
+  setAccount
 } from '../../utils/auth'
+import Cookies from 'js-cookie'
 import {
   validateNotNull
 } from '../../validate'
@@ -48,7 +50,8 @@ export default {
   name: 'Index',
   data() {
     return {
-      username: '13968137471',
+      username: '慈溪人民政府',
+      // username: '宁波爱豆网络科技',
       password: '111111',
       code: ''
     }
@@ -72,6 +75,8 @@ export default {
         this.$message.success('登入成功')
 
         setToken(result.data.token)
+        setAccount(result.data.groupType)
+        Cookies.set('loginData', JSON.stringify(result.data))
 
         if (result.data.status === 1) {
           this.$router.replace({
