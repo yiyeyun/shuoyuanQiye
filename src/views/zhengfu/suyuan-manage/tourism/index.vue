@@ -46,11 +46,12 @@ export default {
     this.getTourism()
     let editor = new E(this.$refs.editor)
     editor.customConfig.onchange = (html) => {
-      console.log(html)
-      this.editorContent = html
+      console.log(111, html)
+      console.log(111, this.htmlData)
+      this.htmlData = html
     }
     editor.create()
-    editor.txt.html(this.editorContent)
+    editor.txt.html(this.htmlData)
     this.editor = editor
     this.dialog = false
   },
@@ -61,7 +62,8 @@ export default {
     async getTourism() {
       try {
         const data = await getTourism()
-        this.htmlData = data.data.text
+        this.htmlData = data.data.tourismText
+        this.editorContent = data.data.tourismText
         this.id = data.data.id
       } catch (e) {
         console.log(e)
@@ -75,9 +77,9 @@ export default {
       try {
         const data = {}
         data.id = this.id
-        data.text = this.editorContent
+        data.text = this.htmlData
         await tourismHandle(data)
-        this.htmlData = this.editorContent
+        // this.htmlData = this.editorContent
         this.$message.success('操作成功')
         this.dialog = false
       } catch (e) {

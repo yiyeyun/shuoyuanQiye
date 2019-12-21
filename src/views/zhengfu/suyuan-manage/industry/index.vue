@@ -9,8 +9,8 @@
     </div>
 
     <div class="width-500">{{ industryData.text }}</div>
-    <div class="font-size-0">
-      <div v-for="item in industryData.imageList" class="width-500">
+    <div class="font-size-0 flex">
+      <div v-for="item in industryData.imageList" class="flex-1 mr10">
         <img :src="item" class="full-width" alt="">
       </div>
     </div>

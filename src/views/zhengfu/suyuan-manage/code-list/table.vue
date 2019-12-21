@@ -29,19 +29,19 @@
         align="center"
         label="子码结束编号"
       />
-      <el-table-column
-        prop="packNum"
-        align="center"
-        label="每包数量"
-      />
-      <el-table-column
-        align="center"
-        label="是否使用完毕"
-      >
-        <template slot-scope="scope">
-          <div>{{ scope.row.isAllUse ? '是' : '否' }}</div>
-        </template>
-      </el-table-column>
+      <!--<el-table-column-->
+        <!--prop="packNum"-->
+        <!--align="center"-->
+        <!--label="每包数量"-->
+      <!--/>-->
+      <!--<el-table-column-->
+        <!--align="center"-->
+        <!--label="是否使用完毕"-->
+      <!--&gt;-->
+        <!--<template slot-scope="scope">-->
+          <!--<div>{{ scope.row.isAllUse ? '是' : '否' }}</div>-->
+        <!--</template>-->
+      <!--</el-table-column>-->
       <el-table-column
         prop="created"
         align="center"
