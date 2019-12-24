@@ -50,8 +50,8 @@ export default {
   name: 'Index',
   data() {
     return {
-      username: '慈溪人民政府',
-      // username: '宁波爱豆网络科技',
+      // username: '慈溪人民政府',
+      username: '宁波爱豆网络科技',
       password: '111111',
       code: ''
     }

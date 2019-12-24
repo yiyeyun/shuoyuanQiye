@@ -13,6 +13,7 @@
         :unique-opened="true"
         @select="select"
       >
+        <!--政府-->
         <el-submenu index="1" v-if="account == 2">
           <template slot="title">
             <i class="el-icon-goods" />
@@ -29,6 +30,35 @@
           <el-menu-item index="/tourism">旅游介绍</el-menu-item>
           <el-menu-item index="/industry">产业介绍</el-menu-item>
         </el-submenu>
+
+
+        <!--企业-->
+        <el-menu-item index="/company-info" v-if="account == 1">
+          <template slot="title">
+            <i class="el-icon-tickets" />
+            <span>企业信息</span>
+          </template>
+          <!--<el-menu-item index="/account">客户列表</el-menu-item>-->
+        </el-menu-item>
+        <el-submenu index="2" v-if="account == 1">
+          <template slot="title">
+            <i class="el-icon-menu" />
+            <span>码包管理</span>
+          </template>
+          <!--<el-menu-item index="/code-list">码包管理</el-menu-item>-->
+          <el-menu-item index="/tourism">码包列表</el-menu-item>
+          <el-menu-item index="/industry">已绑定码包</el-menu-item>
+        </el-submenu>
+        <el-submenu index="3" v-if="account == 1">
+          <template slot="title">
+            <i class="el-icon-menu" />
+            <span>商品管理</span>
+          </template>
+          <!--<el-menu-item index="/code-list">码包管理</el-menu-item>-->
+          <el-menu-item index="/goods-list">商品列表</el-menu-item>
+        </el-submenu>
+
+        <!--公共-->
         <el-menu-item index="/setting">
           <template slot="title">
             <i class="el-icon-tickets" />

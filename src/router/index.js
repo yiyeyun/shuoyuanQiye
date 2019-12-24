@@ -37,8 +37,12 @@ export default new Router({
           component: () => import('@/views/zhengfu/suyuan-manage/tourism')
         },
         {
+          path: '/company-info',
+          component: () => import('@/views/qiye/company-info')
+        },
+        {
           path: '/goods-list',
-          component: () => import('../views/goods/list')
+          component: () => import('../views/qiye/goods-manage/goods-list')
         },
         {
           path: '/source',
