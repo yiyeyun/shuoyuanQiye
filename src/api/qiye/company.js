@@ -7,3 +7,11 @@ export function getCompanyInfo(data) {
     data
   })
 }
+
+export function createdCompanyInfo(data) {
+  return request({
+    url: `createdInfo`,
+    method: 'post',
+    data
+  })
+}

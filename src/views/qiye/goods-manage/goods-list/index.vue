@@ -45,6 +45,10 @@ export default {
       } catch (e) {
         console.log(e)
       }
+    },
+    pageChange(page) {
+      this.params.page = page
+      this.getGoodsList()
     }
   },
   mounted() {

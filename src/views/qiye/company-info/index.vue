@@ -22,15 +22,34 @@
       <div v-show="!isEdit">
         <div class="flex align-center mt20">
           <div class="label-80 mr10">公司地址</div>
-          <div class="width-200 mr10">{{ companyInfo.address }} </div>
+          <div class="mr10">{{ companyInfo.address }} </div>
+        </div>
+
+        <div class="flex align-center mt20">
+          <div class="label-80 mr10">公司简介</div>
+          <div class="mr10">{{ companyInfo.introduction }} </div>
         </div>
         <div class="flex align-center mt20">
           <div class="label-80 mr10">公司资质</div>
-          <div class="width-200 mr10">{{ companyInfo.companyZizi }} </div>
+          <div v-viewer="{movable: false}" class="images pointer flex v-viewer1" @click="previewImg('v-viewer1')">
+            <img
+              v-for="(item, index) in companyInfo.companyZizi"
+              :key="index"
+              class="table-pic"
+              :src="item"
+            >
+          </div>
         </div>
         <div class="flex align-center mt20">
-          <div class="label-80 mr10">公司简介</div>
-          <div class="width-200 mr10">{{ companyInfo.introduction }} </div>
+          <div class="label-80 mr10">公司照片</div>
+          <div v-viewer="{movable: false}" class="images pointer flex v-viewer2" @click="previewImg('v-viewer2')">
+            <img
+              v-for="(item, index) in companyInfo.logoList"
+              :key="index"
+              class="table-pic"
+              :src="item"
+            >
+          </div>
         </div>
         <div class="flex align-center mt20">
           <div class="label-80 mr10">联系方式</div>
@@ -71,7 +90,7 @@
         <div class="flex align-center mt20">
           <div class="label-80 mr10">公司介绍</div>
           <div class="flex-1">
-            <el-input v-model="detailAddress" />
+            <el-input v-model="form.introduction" />
           </div>
         </div>
 
@@ -88,9 +107,9 @@
             <idol-qiniu-upload
               list-type="picture-card"
               :limit="9"
-              :file-list="form.companyZizi"
-              @upload-success="logoPicUpload(arguments)"
-              @remove="logoPicRemove(arguments)"
+              :file-list="form.logoList"
+              @upload-success="logoPicUpload1(arguments)"
+              @remove="logoPicRemove1(arguments)"
             >
               <i class="el-icon-plus" />
             </idol-qiniu-upload></div>
@@ -112,7 +131,8 @@
 import qiniuUplad from '@/components/pic-upload/qiniu-upload'
 import VDistpicker from 'v-distpicker'
 import {
-  getCompanyInfo
+  getCompanyInfo,
+  createdCompanyInfo
 } from '../../../api/qiye/company'
 
 export default {
@@ -137,7 +157,8 @@ export default {
         address: '',
         tel: '',
         introduction: '',
-        companyZizi: []
+        companyZizi: [],
+        logoList: []
       }
     }
   },
@@ -145,7 +166,10 @@ export default {
     this.getCompanyInfo()
   },
   methods: {
-
+    previewImg(className) {
+      const viewer = this.$el.querySelector(className).$viewer
+      viewer.show()
+    },
     async getCompanyInfo() {
       try {
         const res = await getCompanyInfo()
@@ -162,10 +186,10 @@ export default {
     async submit() {
       this.form.address = `${this.address.province}${this.address.city}${this.address.area}${this.detailAddress}`
       try {
-        await userDataHandle(this.form)
-        this.$router.replace({
-          path: '/'
-        })
+        await createdCompanyInfo(this.form)
+        this.isEdit = false
+        this.getCompanyInfo()
+        this.$message.success('操作成功')
       } catch (e) {
         console.log(e)
       }
@@ -184,6 +208,12 @@ export default {
     },
     logoPicRemove(e) {
       this.form.companyZizi = this.removePicHandle(e[0], this.form.companyZizi)
+    },
+    logoPicUpload1(e) {
+      this.form.logoList.push(e[0])
+    },
+    logoPicRemove1(e) {
+      this.form.logoList = this.removePicHandle(e[0], this.form.logoList)
     }
   }
 }
@@ -196,11 +226,19 @@ export default {
     justify-content: center;
     align-items: center;
   }
+  .table-pic{
+    width: 60px;
+    height: 60px;
+    margin: 0 5px;
+  }
   .box{
     border-radius: 10px;
     background: #fff;
     padding: 40px;
     width: 700px;
+  }
+  .label-80{
+    flex: 0 0 80px;
   }
   /deep/ .el-upload-list--picture-card .el-upload-list__item,
   /deep/ .el-upload--picture-card{
