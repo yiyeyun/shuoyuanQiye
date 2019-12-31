@@ -51,7 +51,7 @@ export default {
   data() {
     return {
       // username: '慈溪人民政府',
-      username: '宁波爱豆网络科技',
+      username: '企业A',
       password: '111111',
       code: ''
     }

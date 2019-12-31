@@ -20,14 +20,6 @@
         label="类目"
       />
       <el-table-column
-        align="center"
-        label="状态"
-      >
-        <template slot-scope="scope">
-          <div>{{scope.row.dpStatus == 1 ? '正常' : scope.row.dpStatus == 2 ? '下架': '删除'}}</div>
-        </template>
-      </el-table-column>
-      <el-table-column
         prop="variety"
         align="center"
         label="品种"
@@ -46,11 +38,6 @@
         prop="logo"
         align="center"
         label="logo"
-      />
-      <el-table-column
-        prop="halalSign"
-        align="center"
-        label="清真认证"
       />
       <el-table-column
         prop="isSuyuanOpen"

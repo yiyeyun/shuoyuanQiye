@@ -52,6 +52,10 @@
           </div>
         </div>
         <div class="flex align-center mt20">
+          <div class="label-80 mr10">公司网址</div>
+          <div class="width-200 mr10">{{ companyInfo.url }} </div>
+        </div>
+        <div class="flex align-center mt20">
           <div class="label-80 mr10">联系方式</div>
           <div class="width-200 mr10">{{ companyInfo.tel }} </div>
         </div>
@@ -98,6 +102,12 @@
           <div class="label-80 mr10">联系人电话</div>
           <div class="width-200 mr10">
             <el-input v-model="form.phone" />
+          </div>
+        </div>
+        <div class="flex align-center mt20">
+          <div class="label-80 mr10">公司网址</div>
+          <div class="width-200 mr10">
+            <el-input v-model="form.url" />
           </div>
         </div>
 
