@@ -7,3 +7,10 @@ export function getGoodsList(data) {
     data
   })
 }
+export function createdOrUpdatedProduct(data) {
+  return request({
+    url: `product/createdOrUpdatedProduct`,
+    method: 'post',
+    data
+  })
+}

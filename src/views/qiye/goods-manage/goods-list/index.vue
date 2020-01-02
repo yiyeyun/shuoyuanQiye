@@ -12,6 +12,13 @@
       :total="total"
       @current-change="pageChange"
     />
+    <el-dialog
+      :title="type === 'add' ? '添加商品' : '编辑商品'"
+      :visible.sync="goodsDialog"
+      width="600px"
+    >
+      <idol-handle :type="type"></idol-handle>
+    </el-dialog>
   </div>
 </template>
 
@@ -20,24 +27,33 @@ import idolTable from './table'
 import {
   getGoodsList
 } from '../../../../api/qiye/goods'
-
+import idolHandle from './handle'
 export default {
   name: 'Index',
   components: {
-    idolTable
+    idolTable,
+    idolHandle
   },
   data() {
     return {
       total: 0,
       list: [],
+      goodsDialog: false,
+      type: '',
       params: {
         page: 1,
         limit: 10
       }
     }
   },
+  mounted() {
+    this.getGoodsList()
+  },
   methods: {
-    addGoods() {},
+    addGoods() {
+      this.type = 'add'
+      this.goodsDialog = true
+    },
     async getGoodsList() {
       try {
         const res = await getGoodsList(this.params)
@@ -50,9 +66,6 @@ export default {
       this.params.page = page
       this.getGoodsList()
     }
-  },
-  mounted() {
-    this.getGoodsList()
   }
 }
 </script>
