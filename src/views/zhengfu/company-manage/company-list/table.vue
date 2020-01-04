@@ -166,7 +166,7 @@ export default {
       giveDialog: false,
       giveData: {},
       subCodeInfo: {},
-      subCodeIndex: '', // 75277
+      subCodeIndex: '', // 25300
       startIndex: '',
       endIndex: '',
       activeName: 'first'
@@ -210,7 +210,6 @@ export default {
       try {
         const res = await getSubCodeInfo(this.subCodeIndex)
         this.subCodeInfo = res.data
-        console.log(res)
       } catch (e) {
         console.log(e)
       }

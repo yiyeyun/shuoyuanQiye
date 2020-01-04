@@ -3,7 +3,11 @@
     <div class="mb20">
       <el-button type="warning" size="small" @click="addGoods">添加商品</el-button>
     </div>
-    <idol-table :list="list" />
+    <idol-table
+      :list="list"
+      @edit="editItem"
+      @success="success"
+    />
     <el-pagination
       background
       class="mt10"
@@ -16,8 +20,16 @@
       :title="type === 'add' ? '添加商品' : '编辑商品'"
       :visible.sync="goodsDialog"
       width="600px"
+      :close-on-click-modal="false"
+      @close="type = ''"
     >
-      <idol-handle :type="type"></idol-handle>
+      <idol-handle
+        :edit-data="editData"
+        :type="type"
+        @close="goodsDialog = false"
+        @edit-success="success"
+        @success="success(1)"
+      />
     </el-dialog>
   </div>
 </template>
@@ -38,6 +50,7 @@ export default {
     return {
       total: 0,
       list: [],
+      editData: {},
       goodsDialog: false,
       type: '',
       params: {
@@ -54,6 +67,14 @@ export default {
       this.type = 'add'
       this.goodsDialog = true
     },
+    success(page) {
+      if (page) {
+        this.params.page = 1
+      }
+      this.type = ''
+      this.goodsDialog = false
+      this.getGoodsList()
+    },
     async getGoodsList() {
       try {
         const res = await getGoodsList(this.params)
@@ -61,6 +82,11 @@ export default {
       } catch (e) {
         console.log(e)
       }
+    },
+    editItem(data) {
+      this.type = 'edit'
+      this.editData = data
+      this.goodsDialog = true
     },
     pageChange(page) {
       this.params.page = page

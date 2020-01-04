@@ -78,6 +78,7 @@
     <div class="flex mt20 align-center">
       <div class="label-80 mr10" />
       <el-button type="warning" size="mini" @click="submit">提交</el-button>
+      <el-button type="danger" size="mini" @click="close" class="ml20">取消</el-button>
     </div>
   </div>
 </template>
@@ -94,7 +95,8 @@ export default {
     VDistpicker
   },
   props: {
-    type: String
+    type: String,
+    editData: Object
   },
   data() {
     return {
@@ -119,9 +121,46 @@ export default {
       }
     }
   },
+  watch: {
+    type: {
+      immediate: true,
+      handler(data) {
+        if (!data) {
+          this.form = {
+            title: '',
+            brand: '',
+            cname: '',
+            halalSign: '',
+            image: [],
+            logo: '',
+            origin: '',
+            variety: ''
+          }
+          this.hash = []
+          this.logo = []
+          this.detailAddress = ''
+          this.address = {
+            province: '',
+            city: '',
+            area: ''
+          }
+        } else if (data === 'edit') {
+          this.form.title = this.editData.title
+          this.form.brand = this.editData.brand
+          this.form.cname = this.editData.cname
+          this.form.origin = this.editData.origin
+          this.detailAddress = this.editData.origin
+          this.form.variety = this.editData.variety
+          this.form.image = this.editData.image
+          this.logo = [this.editData.logo]
+          this.hash = [this.editData.halalSign]
+          this.pid = this.editData.id
+        }
+      }
+    }
+  },
   methods: {
     async submit() {
-      console.log(this.address, this.detailAddress, this.logo, this.hash, this.form.image)
       this.form.origin =
         this.address.province +
         this.address.city +
@@ -134,10 +173,20 @@ export default {
           await createdOrUpdatedProduct(this.form)
           this.$message.success('提交成功')
           this.$emit('success')
+        } else {
+          await createdOrUpdatedProduct({
+            ...this.form,
+            pid: this.pid
+          })
+          this.$message.success('提交成功')
+          this.$emit('edit-success')
         }
       } catch (e) {
         console.log(e)
       }
+    },
+    close() {
+
     },
     logoPicUpload(e) {
       this.logo = [e[0]]

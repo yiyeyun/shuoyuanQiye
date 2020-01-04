@@ -14,3 +14,10 @@ export function createdOrUpdatedProduct(data) {
     data
   })
 }
+export function openTraceability(data) {
+  return request({
+    url: `product/openTraceability`,
+    method: 'post',
+    data
+  })
+}
