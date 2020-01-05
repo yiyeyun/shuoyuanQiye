@@ -3,7 +3,11 @@
     <div class="mb20">
       <el-button type="warning" size="small" @click="addGoods">添加商品</el-button>
     </div>
-    <idol-table :list="list" />
+    <idol-table
+      :list="list"
+      @edit="editItem"
+      @success="success"
+    />
     <el-pagination
       background
       class="mt10"
@@ -12,6 +16,21 @@
       :total="total"
       @current-change="pageChange"
     />
+    <el-dialog
+      :title="type === 'add' ? '添加商品' : '编辑商品'"
+      :visible.sync="goodsDialog"
+      width="600px"
+      :close-on-click-modal="false"
+      @close="type = ''"
+    >
+      <idol-handle
+        :edit-data="editData"
+        :type="type"
+        @close="goodsDialog = false"
+        @edit-success="success"
+        @success="success(1)"
+      />
+    </el-dialog>
   </div>
 </template>
 
@@ -20,24 +39,42 @@ import idolTable from './table'
 import {
   getGoodsList
 } from '../../../../api/qiye/goods'
-
+import idolHandle from './handle'
 export default {
   name: 'Index',
   components: {
-    idolTable
+    idolTable,
+    idolHandle
   },
   data() {
     return {
       total: 0,
       list: [],
+      editData: {},
+      goodsDialog: false,
+      type: '',
       params: {
         page: 1,
         limit: 10
       }
     }
   },
+  mounted() {
+    this.getGoodsList()
+  },
   methods: {
-    addGoods() {},
+    addGoods() {
+      this.type = 'add'
+      this.goodsDialog = true
+    },
+    success(page) {
+      if (page) {
+        this.params.page = 1
+      }
+      this.type = ''
+      this.goodsDialog = false
+      this.getGoodsList()
+    },
     async getGoodsList() {
       try {
         const res = await getGoodsList(this.params)
@@ -46,13 +83,15 @@ export default {
         console.log(e)
       }
     },
+    editItem(data) {
+      this.type = 'edit'
+      this.editData = data
+      this.goodsDialog = true
+    },
     pageChange(page) {
       this.params.page = page
       this.getGoodsList()
     }
-  },
-  mounted() {
-    this.getGoodsList()
   }
 }
 </script>

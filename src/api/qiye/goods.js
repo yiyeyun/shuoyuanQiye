@@ -7,3 +7,17 @@ export function getGoodsList(data) {
     data
   })
 }
+export function createdOrUpdatedProduct(data) {
+  return request({
+    url: `product/createdOrUpdatedProduct`,
+    method: 'post',
+    data
+  })
+}
+export function openTraceability(data) {
+  return request({
+    url: `product/openTraceability`,
+    method: 'post',
+    data
+  })
+}
