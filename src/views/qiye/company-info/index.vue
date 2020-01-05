@@ -62,6 +62,19 @@
       </div>
       <div v-show="isEdit">
 
+          <div class="flex align-center mt40">
+              <div class="label-80 mr10">视频中心</div>
+              <idol-video-upload
+                      list-type="picture-card"
+                      :limit="1"
+                      :file-list="video"
+                      @upload-success="videoUpload(arguments)"
+                      @remove="videoRemove(arguments)"
+              >
+                  <i class="el-icon-plus" />
+              </idol-video-upload>
+          </div>
+
         <div class="flex align-center mt40">
           <div class="label-80 mr10">公司资质</div>
           <div class="width-200 mr10">
@@ -98,10 +111,17 @@
           </div>
         </div>
 
+          <div class="flex align-center mt20">
+              <div class="label-80 mr10">联系人</div>
+              <div class="width-200 mr10">
+                  <el-input v-model="form.contactPerson" />
+              </div>
+          </div>
+
         <div class="flex align-center mt20">
           <div class="label-80 mr10">联系人电话</div>
           <div class="width-200 mr10">
-            <el-input v-model="form.phone" />
+            <el-input v-model="form.tel" />
           </div>
         </div>
         <div class="flex align-center mt20">
@@ -110,6 +130,41 @@
             <el-input v-model="form.url" />
           </div>
         </div>
+
+          <div class="mt10 flex" v-for="item in customerServicePhone">
+              <div class="width-200 mr10">
+                  <el-input placeholder="客服姓名"
+                            v-model="item[0]" />
+              </div>
+              <div class="width-200 mr10">
+                  <el-input placeholder="客服电话"
+                            v-model="item[1]" />
+              </div>
+          </div>
+
+          <div class="flex align-center mt20">
+              <el-button @click="addService">添加客服</el-button>
+          </div>
+
+
+          <div class="mt20 flex" v-for="item in form.outletsRequests">
+              <div class="width-200 mr10">
+                  <el-input placeholder="网点名称"
+                            v-model="item.outletsName" />
+              </div>
+              <div class="width-200 mr10">
+                  <el-input placeholder="联系电话"
+                            v-model="item.phone" />
+              </div>
+              <div class="flex-1">
+                  <el-input placeholder="详细地址"
+                            v-model="item.address" />
+              </div>
+          </div>
+
+          <div class="flex align-center mt10">
+              <el-button @click="addRequest">添加网点</el-button>
+          </div>
 
         <div class="flex align-center mt40">
           <div class="label-80 mr10">公司图片</div>
@@ -140,6 +195,7 @@
 <script>
 import qiniuUplad from '@/components/pic-upload/qiniu-upload'
 import VDistpicker from 'v-distpicker'
+import videoUplad from '@/components/video-upload/video-upload'
 import {
   getCompanyInfo,
   createdCompanyInfo
@@ -149,6 +205,7 @@ export default {
   name: 'AdminData',
   components: {
     idolQiniuUpload: qiniuUplad,
+    idolVideoUpload: videoUplad,
     VDistpicker
   },
   data() {
@@ -156,18 +213,22 @@ export default {
       second: 0,
       isEdit: false,
       interval: null,
+      video: [],
       address: {
         province: '',
         city: '',
         area: ''
       },
+      customerServicePhone: [],
       detailAddress: '',
       companyInfo: {},
       form: {
         address: '',
         tel: '',
         introduction: '',
+        outletsRequests: [],
         companyZizi: [],
+        contactPerson: '',
         logoList: []
       }
     }
@@ -176,6 +237,24 @@ export default {
     this.getCompanyInfo()
   },
   methods: {
+    addRequest() {
+      console.log(this.form.outletsRequests)
+      this.form.outletsRequests.push({
+        outletsName: '',
+        phone: '',
+        address: ''
+      })
+    },
+    addService() {
+      console.log(this.customerServicePhone)
+      this.customerServicePhone.push(['', ''])
+    },
+    videoUpload(e) {
+      this.video = [e[0]]
+    },
+    videoRemove(e) {
+      this.video = []
+    },
     previewImg(className) {
       const viewer = this.$el.querySelector(className).$viewer
       viewer.show()
@@ -194,9 +273,17 @@ export default {
       this.address.area = data.area.value
     },
     async submit() {
+      let customerServicePhone = {}
+      this.customerServicePhone.forEach(item => {
+        customerServicePhone[item[0]] = item[1]
+      })
       this.form.address = `${this.address.province}${this.address.city}${this.address.area}${this.detailAddress}`
       try {
-        await createdCompanyInfo(this.form)
+        await createdCompanyInfo({
+          ...this.form,
+          videoUrl: this.video[0],
+          customerServicePhone
+        })
         this.isEdit = false
         this.getCompanyInfo()
         this.$message.success('操作成功')
