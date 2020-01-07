@@ -6,6 +6,7 @@
     <idol-table
       :list="list"
       @edit="editItem"
+      @su-yuan-manage="suYuanManage"
       @success="success"
     />
     <el-pagination
@@ -31,6 +32,14 @@
         @success="success(1)"
       />
     </el-dialog>
+      <el-dialog
+              title="溯源管理"
+              width="80%"
+              :visible.sync="suYuanDialog"
+              :close-on-click-modal="false">
+          <idol-su-yuan :id="suYuanData.id" @close="suYuanDialog = false"></idol-su-yuan>
+
+      </el-dialog>
   </div>
 </template>
 
@@ -40,18 +49,22 @@ import {
   getGoodsList
 } from '../../../../api/qiye/goods'
 import idolHandle from './handle'
+import idolSuYuan from './su-yuan'
 export default {
   name: 'Index',
   components: {
     idolTable,
-    idolHandle
+    idolHandle,
+    idolSuYuan
   },
   data() {
     return {
       total: 0,
       list: [],
+      suYuanData: {},
       editData: {},
       goodsDialog: false,
+      suYuanDialog: false,
       type: '',
       params: {
         page: 1,
@@ -83,6 +96,11 @@ export default {
         console.log(e)
       }
     },
+suYuanManage(data) {
+      console.log(data)
+  this.suYuanData = data
+  this.suYuanDialog = true
+},
     editItem(data) {
       this.type = 'edit'
       this.editData = data

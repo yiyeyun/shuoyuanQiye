@@ -18,7 +18,15 @@
         <div class="label-80 mr10">公司名</div>
         <div class="width-200 mr10">{{ companyInfo.groupName }} </div>
       </div>
-
+        <div class="flex align-center mt40">
+            <div class="label-80 mr10">视频</div>
+            <video width="320" height="200"
+                   :src="companyInfo.videoUrl"
+                   controls>
+                <!--<source :src="companyInfo.videoUrl">-->
+                <!--您的浏览器不支持 video 标签。-->
+            </video>
+        </div>
       <div v-show="!isEdit">
         <div class="flex align-center mt20">
           <div class="label-80 mr10">公司地址</div>
@@ -31,7 +39,7 @@
         </div>
         <div class="flex align-center mt20">
           <div class="label-80 mr10">公司资质</div>
-          <div v-viewer="{movable: false}" class="images pointer flex v-viewer1" @click="previewImg('v-viewer1')">
+          <div v-viewer="{movable: false}" class="images pointer flex v-viewer1">
             <img
               v-for="(item, index) in companyInfo.companyZizi"
               :key="index"
@@ -42,7 +50,7 @@
         </div>
         <div class="flex align-center mt20">
           <div class="label-80 mr10">公司照片</div>
-          <div v-viewer="{movable: false}" class="images pointer flex v-viewer2" @click="previewImg('v-viewer2')">
+          <div v-viewer="{movable: false}" class="images pointer flex v-viewer2">
             <img
               v-for="(item, index) in companyInfo.logoList"
               :key="index"
@@ -59,6 +67,39 @@
           <div class="label-80 mr10">联系方式</div>
           <div class="width-200 mr10">{{ companyInfo.tel }} </div>
         </div>
+          <div class="flex align-center mt20">
+              <div class="label-80 mr10">联系人</div>
+              <div class="width-200 mr10">{{ companyInfo.contactPerson }} </div>
+          </div>
+          <div class="flex align-center mt20">
+              <div class="label-80 mr10">客服</div>
+              <div>
+                  <div class="mt10 flex" v-for="(item, index) in companyInfo.customerServicePhone">
+                      <div class="width-100 mr10">{{index}}</div>
+                      <div>{{item}}</div>
+                  </div>
+              </div>
+          </div>
+          <div class="flex align-center mt20">
+              <div class="label-80 mr10">网点</div>
+              <el-table :data="companyInfo.outletsRequests">
+                  <el-table-column
+                          prop="outletsName"
+                          align="center"
+                          label="联系人"
+                  />
+                  <el-table-column
+                          prop="phone"
+                          align="center"
+                          label="联系方式"
+                  />
+                  <el-table-column
+                          prop="address"
+                          align="center"
+                          label="地址"
+                  />
+              </el-table>
+          </div>
       </div>
       <div v-show="isEdit">
 
@@ -237,6 +278,12 @@ export default {
     this.getCompanyInfo()
   },
   methods: {
+    videoHandle() {
+      if (this.$refs.video.paused)
+        this.$refs.video.play();
+      else
+        this.$refs.video.pause();
+    },
     addRequest() {
       console.log(this.form.outletsRequests)
       this.form.outletsRequests.push({
@@ -255,10 +302,12 @@ export default {
     videoRemove(e) {
       this.video = []
     },
-    previewImg(className) {
-      const viewer = this.$el.querySelector(className).$viewer
-      viewer.show()
-    },
+    // previewImg(className) {
+    //   conso
+    //   const viewer = this.$el.querySelector(className).$viewer
+    //   console.log(className, viewer)
+    //   viewer.show()
+    // },
     async getCompanyInfo() {
       try {
         const res = await getCompanyInfo()

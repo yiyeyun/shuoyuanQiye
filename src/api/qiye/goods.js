@@ -21,3 +21,34 @@ export function openTraceability(data) {
     data
   })
 }
+
+export function bindSubCodeByItemId(data) {
+  return request({
+    url: `product/bindSubCodeByItemId`,
+    method: 'post',
+    data
+  })
+}
+
+export function bindAreaCodeByItemId(data) {
+  return request({
+    url: `product/bindAreaCodeByItemId`,
+    method: 'post',
+    data
+  })
+}
+export function selectProductSuyuan(id) {
+  return request({
+    url: `product/selectProductSuyuan/${id}`,
+    method: 'post'
+  })
+}
+
+export function createdOrUpdatedProductSuyuan(data) {
+  console.log(data)
+  return request({
+    url: `product/createdOrUpdatedProductSuyuan`,
+    method: 'post',
+    data
+  })
+}

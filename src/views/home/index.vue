@@ -40,15 +40,15 @@
           </template>
           <!--<el-menu-item index="/account">客户列表</el-menu-item>-->
         </el-menu-item>
-        <el-submenu index="2" v-if="account == 1">
-          <template slot="title">
-            <i class="el-icon-menu" />
-            <span>码包管理</span>
-          </template>
-          <!--<el-menu-item index="/code-list">码包管理</el-menu-item>-->
-          <el-menu-item index="/tourism">码包列表</el-menu-item>
-          <el-menu-item index="/industry">已绑定码包</el-menu-item>
-        </el-submenu>
+        <!--<el-submenu index="2" v-if="account == 1">-->
+          <!--<template slot="title">-->
+            <!--<i class="el-icon-menu" />-->
+            <!--<span>码包管理</span>-->
+          <!--</template>-->
+          <!--&lt;!&ndash;<el-menu-item index="/code-list">码包管理</el-menu-item>&ndash;&gt;-->
+          <!--<el-menu-item index="/tourism">码包列表</el-menu-item>-->
+          <!--<el-menu-item index="/industry">已绑定码包</el-menu-item>-->
+        <!--</el-submenu>-->
         <el-submenu index="3" v-if="account == 1">
           <template slot="title">
             <i class="el-icon-menu" />

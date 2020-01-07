@@ -62,18 +62,21 @@
         label="溯源管理"
       >
         <template slot-scope="scope">
-          <el-button
-            v-show="scope.row.isSuyuanOpen"
-            type="danger"
-            size="mini"
-            @click="suYuan(scope.row)"
-          >关闭溯源</el-button>
-          <el-button
-            v-show="!scope.row.isSuyuanOpen"
-            type="primary"
-            size="mini"
-            @click="suYuan(scope.row)"
-          >开启溯源</el-button>
+            <el-button type="primary"
+                       @click="manage(scope.row)"
+                       size="mini">管理</el-button>
+          <!--<el-button-->
+            <!--v-show="scope.row.isSuyuanOpen"-->
+            <!--type="danger"-->
+            <!--size="mini"-->
+            <!--@click="suYuan(scope.row)"-->
+          <!--&gt;关闭溯源</el-button>-->
+          <!--<el-button-->
+            <!--v-show="!scope.row.isSuyuanOpen"-->
+            <!--type="primary"-->
+            <!--size="mini"-->
+            <!--@click="suYuan(scope.row)"-->
+          <!--&gt;开启溯源</el-button>-->
         </template>
       </el-table-column>
       <el-table-column
@@ -136,7 +139,7 @@
               <div>{{ subCodeInfo.num }}</div>
             </div>
             <div class="mt10 flex align-center">
-              <div class="label-80 mr10">是否可分配</div>
+              <div class="label-80 mr10">是否可绑定</div>
               <div>{{ subCodeInfo.isAllocated ? '是': '否' }}</div>
             </div>
           </div>
@@ -157,7 +160,7 @@
         </el-tab-pane>
       </el-tabs>
       <div class="mt30">
-        <el-button type="warning" size="mini" class="mr10" @click="distribution">分配</el-button>
+        <el-button type="warning" size="mini" class="mr10" @click="distribution">绑定</el-button>
         <el-button size="mini" @click="giveDialog = false">取消</el-button>
       </div>
     </el-dialog>
@@ -169,9 +172,13 @@
 import { openTraceability } from '../../../../api/qiye/goods'
 import {
   getSubCodeInfo,
-  areaDistribution,
-  issuedAccount
+  areaDistribution
 } from '../../../../api/zhengfu/code'
+import {
+  bindSubCodeByItemId,
+  bindAreaCodeByItemId
+} from "../../../../api/qiye/goods";
+
 export default {
   name: 'Table',
   props: {
@@ -182,7 +189,7 @@ export default {
       giveDialog: false,
       giveData: {},
       subCodeInfo: {},
-      subCodeIndex: '', // 75277
+      subCodeIndex: '', // 25300
       startIndex: '',
       endIndex: '',
       activeName: 'first'
@@ -202,23 +209,31 @@ export default {
     async distribution() {
       try {
         if (this.activeName === 'first') {
-          await issuedAccount({
-            groupId: this.giveData.accountId,
+          if (!this.subCodeInfo.isAllocated) {
+            this.$message.warning('该子码无法绑定')
+            return
+          }
+          await bindSubCodeByItemId({
+            itemId: this.giveData.id,
             subId: this.subCodeIndex
           })
           this.subCodeIndex = ''
           this.subCodeInfo = {}
         } else {
-          await areaDistribution({
+          if (this.codeNum === 0) {
+            this.$message.warning('结束编码必须大于开始编码哦')
+            return
+          }
+          await bindAreaCodeByItemId({
             endIndex: this.endIndex,
             startIndex: this.startIndex,
-            groupId: this.giveData.accountId
+            itemId: this.giveData.id
           })
           this.startIndex = ''
           this.endIndex = ''
         }
         this.giveDialog = false
-        this.$message.success('分配成功')
+        this.$message.success('绑定成功')
       } catch (e) {
         console.log(e)
       }
@@ -239,6 +254,9 @@ export default {
       this.endIndex = ''
       this.giveDialog = true
     },
+    manage (data) {
+  this.$emit('su-yuan-manage', data)
+},
     give() {},
     previewImg(data) {
       const className = `.v-viewer1-${data.$index}`
