@@ -43,44 +43,47 @@
         align="center"
         label="产地"
       />
-      <el-table-column
-        align="center"
-        label="logo"
-      >
-        <template slot-scope="scope">
-          <div v-viewer="{movable: false}" class="flex pointer" :class="'v-viewer2-' + scope.$index" @click="previewImg1(scope)">
-            <img
-              class="table-pic"
-              :src="scope.row.logo"
-            >
-          </div>
-        </template>
-      </el-table-column>
+      <!--<el-table-column-->
+      <!--align="center"-->
+      <!--label="logo"-->
+      <!--&gt;-->
+      <!--<template slot-scope="scope">-->
+      <!--<div v-viewer="{movable: false}" class="flex pointer" :class="'v-viewer2-' + scope.$index" @click="previewImg1(scope)">-->
+      <!--<img-->
+      <!--class="table-pic"-->
+      <!--:src="scope.row.logo"-->
+      <!--&gt;-->
+      <!--</div>-->
+      <!--</template>-->
+      <!--</el-table-column>-->
       <el-table-column
         prop="isSuyuanOpen"
         align="center"
         label="溯源管理"
       >
         <template slot-scope="scope">
-            <el-button type="primary"
-                       @click="manage(scope.row)"
-                       size="mini">管理</el-button>
+          <el-button
+            type="primary"
+            size="mini"
+            @click="manage(scope.row)"
+          >管理</el-button>
           <!--<el-button-->
-            <!--v-show="scope.row.isSuyuanOpen"-->
-            <!--type="danger"-->
-            <!--size="mini"-->
-            <!--@click="suYuan(scope.row)"-->
+          <!--v-show="scope.row.isSuyuanOpen"-->
+          <!--type="danger"-->
+          <!--size="mini"-->
+          <!--@click="suYuan(scope.row)"-->
           <!--&gt;关闭溯源</el-button>-->
           <!--<el-button-->
-            <!--v-show="!scope.row.isSuyuanOpen"-->
-            <!--type="primary"-->
-            <!--size="mini"-->
-            <!--@click="suYuan(scope.row)"-->
+          <!--v-show="!scope.row.isSuyuanOpen"-->
+          <!--type="primary"-->
+          <!--size="mini"-->
+          <!--@click="suYuan(scope.row)"-->
           <!--&gt;开启溯源</el-button>-->
         </template>
       </el-table-column>
       <el-table-column
         prop="title"
+        width="200px"
         align="center"
         label="操作"
       >
@@ -89,7 +92,13 @@
             size="mini"
             type="primary"
             @click="edit(scope.row)"
-          >编辑</el-button>
+          >编辑商品 </el-button>
+          <el-button
+            v-show="scope.row.url"
+            size="mini"
+            type="primary"
+            @click="view(scope.row.url)"
+          >溯源查看 </el-button>
         </template>
       </el-table-column>
       <el-table-column
@@ -97,11 +106,11 @@
         align="center"
         label="创建时间"
       />
-      <el-table-column
-        prop="updated"
-        align="center"
-        label="修改时间"
-      />
+      <!--<el-table-column-->
+      <!--prop="updated"-->
+      <!--align="center"-->
+      <!--label="修改时间"-->
+      <!--/>-->
       <el-table-column
         prop="title"
         align="center"
@@ -117,7 +126,7 @@
     <el-dialog
       :visible.sync="giveDialog"
       :close-on-click-modal="false"
-      title="母码分配"
+      title="商品绑定"
       width="500px"
     >
       <el-tabs v-model="activeName" type="card">
@@ -138,10 +147,10 @@
               <div class="label-80 mr10">子码包数量</div>
               <div>{{ subCodeInfo.num }}</div>
             </div>
-            <div class="mt10 flex align-center">
-              <div class="label-80 mr10">是否可绑定</div>
-              <div>{{ subCodeInfo.isAllocated ? '是': '否' }}</div>
-            </div>
+            <!--<div class="mt10 flex align-center">-->
+            <!--<div class="label-80 mr10">是否可绑定</div>-->
+            <!--<div>{{ subCodeInfo.isAllocated ? '是': '否' }}</div>-->
+            <!--</div>-->
           </div>
         </el-tab-pane>
         <el-tab-pane label="按照区间分配" name="second">
@@ -177,7 +186,7 @@ import {
 import {
   bindSubCodeByItemId,
   bindAreaCodeByItemId
-} from "../../../../api/qiye/goods";
+} from '../../../../api/qiye/goods'
 
 export default {
   name: 'Table',
@@ -206,9 +215,13 @@ export default {
   },
 
   methods: {
+    view(url) {
+      window.open(url)
+    },
     async distribution() {
       try {
         if (this.activeName === 'first') {
+          if (!this.subCodeIndex) { return }
           if (!this.subCodeInfo.isAllocated) {
             this.$message.warning('该子码无法绑定')
             return
@@ -254,9 +267,9 @@ export default {
       this.endIndex = ''
       this.giveDialog = true
     },
-    manage (data) {
-  this.$emit('su-yuan-manage', data)
-},
+    manage(data) {
+      this.$emit('su-yuan-manage', data)
+    },
     give() {},
     previewImg(data) {
       const className = `.v-viewer1-${data.$index}`

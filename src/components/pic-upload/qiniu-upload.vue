@@ -17,6 +17,7 @@
       :data="QiniuData"
       :list-type="listType"
       :on-remove="handleRemove"
+      :on-preview="handlePictureCardPreview"
       :on-error="uploadError"
       :on-success="uploadSuccess"
       :before-remove="beforeRemove"
@@ -35,6 +36,9 @@
       <!--<el-button size="small" type="primary">选择图片</el-button>-->
       <slot />
     </el-upload>
+    <el-dialog :visible.sync="dialogVisible">
+      <img width="100%" :src="dialogImageUrl" alt="">
+    </el-dialog>
   </div>
 </template>
 
@@ -61,6 +65,7 @@ export default {
   data() {
     return {
       loading: false,
+      dialogVisible: false,
       QiniuData: {
         key: '', // 图片名字处理
         token: '' // 七牛云token
@@ -109,6 +114,10 @@ export default {
     })
   },
   methods: {
+    handlePictureCardPreview(file) {
+      this.dialogImageUrl = file.url;
+      this.dialogVisible = true;
+    },
     handleRemove(file, fileList) {
       // console.log('remove', file, fileList)
       // const removePicUrl = `${this.qiniuaddr}/${file.name}`
@@ -123,15 +132,15 @@ export default {
       const isPNG = file.type === 'image/png'
       const isJPEG = file.type === 'image/jpeg'
       const isJPG = file.type === 'image/jpg'
-      const isLt2M = file.size / 1024 / 1024 < 2
+      const isLt2M = file.size / 1024 / 1024 < 5
 
       if (!isPNG && !isJPEG && !isJPG) {
         this.$message.error('上传头像图片只能是 jpg、png、jpeg 格式!')
-        return false
+        throw new Error('上传头像图片只能是 jpg、png、jpeg 格式!')
       }
       if (!isLt2M) {
-        this.$message.error('上传头像图片大小不能超过 2MB!')
-        return false
+        this.$message.error('上传头像图片大小不能超过 5MB!')
+        throw new Error('上传头像图片大小不能超过 5MB!')
       }
       this.QiniuData.key = `upload_pic_${file.name}`
     },

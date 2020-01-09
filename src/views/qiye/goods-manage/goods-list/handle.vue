@@ -47,20 +47,20 @@
         </idol-qiniu-upload>
       </div>
     </div>
-    <div class="flex mt20 align-center">
-      <div class="label-80 mr10">logo</div>
-      <div class="width-200 mr10">
-        <idol-qiniu-upload
-          list-type="picture-card"
-          :limit="1"
-          :file-list="logo"
-          @upload-success="logoPicUpload(arguments)"
-          @remove="logoPicRemove(arguments)"
-        >
-          <i class="el-icon-plus" />
-        </idol-qiniu-upload>
-      </div>
-    </div>
+    <!--<div class="flex mt20 align-center">-->
+      <!--<div class="label-80 mr10">logo</div>-->
+      <!--<div class="width-200 mr10">-->
+        <!--<idol-qiniu-upload-->
+          <!--list-type="picture-card"-->
+          <!--:limit="1"-->
+          <!--:file-list="logo"-->
+          <!--@upload-success="logoPicUpload(arguments)"-->
+          <!--@remove="logoPicRemove(arguments)"-->
+        <!--&gt;-->
+          <!--<i class="el-icon-plus" />-->
+        <!--</idol-qiniu-upload>-->
+      <!--</div>-->
+    <!--</div>-->
     <div class="flex mt20 align-center">
       <div class="label-80 mr10">商品图片</div>
       <div class="width-200 mr10">
@@ -186,7 +186,7 @@ export default {
       }
     },
     close() {
-
+      this.$emit('close')
     },
     logoPicUpload(e) {
       this.logo = [e[0]]
@@ -232,5 +232,8 @@ export default {
   }
   /deep/ .el-upload--picture-card{
     line-height: 68px;
+  }
+  /deep/ .distpicker-address-wrapper select:nth-child(3){
+    display: none;
   }
 </style>

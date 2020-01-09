@@ -3,14 +3,14 @@
 
     <div class="box border-shadow">
       <el-button
-        type="warning"
         v-show="!isEdit"
+        type="warning"
         size="mini"
         @click="isEdit = true"
       >编辑资料</el-button>
       <el-button
-        type="warning"
         v-show="isEdit"
+        type="warning"
         size="mini"
         @click="isEdit = false"
       >取消编辑</el-button>
@@ -18,15 +18,18 @@
         <div class="label-80 mr10">公司名</div>
         <div class="width-200 mr10">{{ companyInfo.groupName }} </div>
       </div>
-        <div class="flex align-center mt40">
-            <div class="label-80 mr10">视频</div>
-            <video width="320" height="200"
-                   :src="companyInfo.videoUrl"
-                   controls>
-                <!--<source :src="companyInfo.videoUrl">-->
-                <!--您的浏览器不支持 video 标签。-->
-            </video>
-        </div>
+      <div v-show="!isEdit" class="flex align-center mt40">
+        <div class="label-80 mr10">视频</div>
+        <video
+          width="320"
+          height="200"
+          :src="companyInfo.videoUrl"
+          controls
+        >
+          <!--<source :src="companyInfo.videoUrl">-->
+          <!--您的浏览器不支持 video 标签。-->
+        </video>
+      </div>
       <div v-show="!isEdit">
         <div class="flex align-center mt20">
           <div class="label-80 mr10">公司地址</div>
@@ -67,54 +70,54 @@
           <div class="label-80 mr10">联系方式</div>
           <div class="width-200 mr10">{{ companyInfo.tel }} </div>
         </div>
-          <div class="flex align-center mt20">
-              <div class="label-80 mr10">联系人</div>
-              <div class="width-200 mr10">{{ companyInfo.contactPerson }} </div>
+        <div class="flex align-center mt20">
+          <div class="label-80 mr10">联系人员</div>
+          <div class="width-200 mr10">{{ companyInfo.contactPerson }} </div>
+        </div>
+        <div class="flex align-center mt20">
+          <div class="label-80 mr10">客服电话</div>
+          <div>
+            <div v-for="(item, index) in companyInfo.customerServicePhone" class="mt10 flex">
+              <div class="width-100 mr10">{{ index }}</div>
+              <div>{{ item }}</div>
+            </div>
           </div>
-          <div class="flex align-center mt20">
-              <div class="label-80 mr10">客服</div>
-              <div>
-                  <div class="mt10 flex" v-for="(item, index) in companyInfo.customerServicePhone">
-                      <div class="width-100 mr10">{{index}}</div>
-                      <div>{{item}}</div>
-                  </div>
-              </div>
-          </div>
-          <div class="flex align-center mt20">
-              <div class="label-80 mr10">网点</div>
-              <el-table :data="companyInfo.outletsRequests">
-                  <el-table-column
-                          prop="outletsName"
-                          align="center"
-                          label="联系人"
-                  />
-                  <el-table-column
-                          prop="phone"
-                          align="center"
-                          label="联系方式"
-                  />
-                  <el-table-column
-                          prop="address"
-                          align="center"
-                          label="地址"
-                  />
-              </el-table>
-          </div>
+        </div>
+        <div class="flex align-center mt20">
+          <div class="label-80 mr10">服务网点</div>
+          <el-table :data="companyInfo.outletsRequests">
+            <el-table-column
+              prop="outletsName"
+              align="center"
+              label="联系人"
+            />
+            <el-table-column
+              prop="phone"
+              align="center"
+              label="联系方式"
+            />
+            <el-table-column
+              prop="address"
+              align="center"
+              label="地址"
+            />
+          </el-table>
+        </div>
       </div>
       <div v-show="isEdit">
 
-          <div class="flex align-center mt40">
-              <div class="label-80 mr10">视频中心</div>
-              <idol-video-upload
-                      list-type="picture-card"
-                      :limit="1"
-                      :file-list="video"
-                      @upload-success="videoUpload(arguments)"
-                      @remove="videoRemove(arguments)"
-              >
-                  <i class="el-icon-plus" />
-              </idol-video-upload>
-          </div>
+        <div class="flex align-center mt40">
+          <div class="label-80 mr10">视频中心</div>
+          <idol-video-upload
+            list-type="picture-card"
+            :limit="1"
+            :file-list="video"
+            @upload-success="videoUpload(arguments)"
+            @remove="videoRemove(arguments)"
+          >
+            <i class="el-icon-plus" />
+          </idol-video-upload>
+        </div>
 
         <div class="flex align-center mt40">
           <div class="label-80 mr10">公司资质</div>
@@ -152,12 +155,12 @@
           </div>
         </div>
 
-          <div class="flex align-center mt20">
-              <div class="label-80 mr10">联系人</div>
-              <div class="width-200 mr10">
-                  <el-input v-model="form.contactPerson" />
-              </div>
+        <div class="flex align-center mt20">
+          <div class="label-80 mr10">联系人</div>
+          <div class="width-200 mr10">
+            <el-input v-model="form.contactPerson" />
           </div>
+        </div>
 
         <div class="flex align-center mt20">
           <div class="label-80 mr10">联系人电话</div>
@@ -172,40 +175,54 @@
           </div>
         </div>
 
-          <div class="mt10 flex" v-for="item in customerServicePhone">
-              <div class="width-200 mr10">
-                  <el-input placeholder="客服姓名"
-                            v-model="item[0]" />
-              </div>
-              <div class="width-200 mr10">
-                  <el-input placeholder="客服电话"
-                            v-model="item[1]" />
-              </div>
+        <div v-for="item in customerServicePhone" class="mt10 flex">
+          <div class="width-200 mr10">
+            <el-input
+              v-model="item[0]"
+              placeholder="客服姓名"
+            />
           </div>
-
-          <div class="flex align-center mt20">
-              <el-button @click="addService">添加客服</el-button>
+          <div class="width-200 mr10">
+            <el-input
+              v-model="item[1]"
+              placeholder="客服电话"
+            />
           </div>
+        </div>
+
+        <div class="flex align-center mt20">
+          <el-button @click="addService">添加客服</el-button>
+        </div>
 
 
-          <div class="mt20 flex" v-for="item in form.outletsRequests">
-              <div class="width-200 mr10">
-                  <el-input placeholder="网点名称"
-                            v-model="item.outletsName" />
-              </div>
-              <div class="width-200 mr10">
-                  <el-input placeholder="联系电话"
-                            v-model="item.phone" />
-              </div>
-              <div class="flex-1">
-                  <el-input placeholder="详细地址"
-                            v-model="item.address" />
-              </div>
+        <div
+          v-for="item in form.outletsRequests"
+          :key="item.phone"
+          class="mt20 flex"
+        >
+          <div class="width-200 mr10">
+            <el-input
+              v-model="item.outletsName"
+              placeholder="网点名称"
+            />
           </div>
-
-          <div class="flex align-center mt10">
-              <el-button @click="addRequest">添加网点</el-button>
+          <div class="width-200 mr10">
+            <el-input
+              v-model="item.phone"
+              placeholder="联系电话"
+            />
           </div>
+          <div class="flex-1">
+            <el-input
+              v-model="item.address"
+              placeholder="详细地址"
+            />
+          </div>
+        </div>
+
+        <div class="flex align-center mt10">
+          <el-button @click="addRequest">添加网点</el-button>
+        </div>
 
         <div class="flex align-center mt40">
           <div class="label-80 mr10">公司图片</div>
@@ -279,13 +296,13 @@ export default {
   },
   methods: {
     videoHandle() {
-      if (this.$refs.video.paused)
-        this.$refs.video.play();
-      else
-        this.$refs.video.pause();
+      if (this.$refs.video.paused) {
+        this.$refs.video.play()
+      } else {
+        this.$refs.video.pause()
+      }
     },
     addRequest() {
-      console.log(this.form.outletsRequests)
       this.form.outletsRequests.push({
         outletsName: '',
         phone: '',
@@ -293,7 +310,6 @@ export default {
       })
     },
     addService() {
-      console.log(this.customerServicePhone)
       this.customerServicePhone.push(['', ''])
     },
     videoUpload(e) {
@@ -302,16 +318,33 @@ export default {
     videoRemove(e) {
       this.video = []
     },
-    // previewImg(className) {
-    //   conso
-    //   const viewer = this.$el.querySelector(className).$viewer
-    //   console.log(className, viewer)
-    //   viewer.show()
-    // },
     async getCompanyInfo() {
       try {
         const res = await getCompanyInfo()
         this.companyInfo = res.data
+        this.video = [this.companyInfo.videoUrl]
+        this.form.companyZizi = this.companyInfo.companyZizi
+        this.detailAddress = this.companyInfo.address
+        this.form.introduction = this.companyInfo.introduction
+        this.form.contactPerson = this.companyInfo.contactPerson
+        this.form.tel = this.companyInfo.tel
+        this.form.url = this.companyInfo.url
+        this.form.logoList = this.companyInfo.logoList
+        // customerServicePhone
+        // logoList
+        // outletsRequests
+        this.customerServicePhone = []
+        this.form.outletsRequests = []
+        for (let key in this.companyInfo.customerServicePhone) {
+          this.customerServicePhone.push([key, this.companyInfo.customerServicePhone[key]])
+        }
+        this.companyInfo.outletsRequests.forEach(item => {
+          this.form.outletsRequests.push({
+            outletsName: item.outletsName,
+            phone: item.phone,
+            address: item.address
+          })
+        })
       } catch (e) {
         console.log(e)
       }
@@ -367,9 +400,10 @@ export default {
 
 <style scoped lang="less">
   .page{
-    padding: 40px;
+    padding: 20px;
     display: flex;
     justify-content: center;
+    box-sizing: border-box;
     align-items: center;
   }
   .table-pic{
@@ -381,6 +415,8 @@ export default {
     border-radius: 10px;
     background: #fff;
     padding: 40px;
+    height: 80%;
+    overflow-y: auto;
     width: 700px;
   }
   .label-80{
