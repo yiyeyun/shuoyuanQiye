@@ -116,9 +116,10 @@ export default {
     },
     async submit() {
       try {
+        const suYuanVoList = this.suYuanData.filter(item => item.nodeGroupName)
         await createdOrUpdatedProductSuyuan({
           itemId: this.id,
-          suYuanVoList: this.suYuanData
+          suYuanVoList
         })
         this.$message.success('提交成功')
         this.$emit('close')
