@@ -77,7 +77,11 @@
         <div class="flex align-center mt20">
           <div class="label-80 mr10">客服电话</div>
           <div>
-            <div v-for="(item, index) in companyInfo.customerServicePhone" class="mt10 flex">
+            <div
+              v-for="(item, index) in companyInfo.customerServicePhone"
+              :key="item"
+              class="mt10 flex"
+            >
               <div class="width-100 mr10">{{ index }}</div>
               <div>{{ item }}</div>
             </div>
@@ -151,7 +155,7 @@
         <div class="flex align-center mt20">
           <div class="label-80 mr10">公司介绍</div>
           <div class="flex-1">
-            <el-input v-model="form.introduction" />
+            <el-input type="textarea" v-model="form.introduction" />
           </div>
         </div>
 
@@ -175,7 +179,11 @@
           </div>
         </div>
 
-        <div v-for="item in customerServicePhone" class="mt10 flex">
+        <div
+          v-for="item in customerServicePhone"
+          :key="item"
+          class="mt10 flex"
+        >
           <div class="width-200 mr10">
             <el-input
               v-model="item[0]"
@@ -196,7 +204,7 @@
 
 
         <div
-          v-for="item in form.outletsRequests"
+          v-for="item in outletsRequests"
           :key="item.phone"
           class="mt20 flex"
         >
@@ -208,7 +216,7 @@
           </div>
           <div class="width-200 mr10">
             <el-input
-              v-model="item.phone"
+              v-model="item.tel"
               placeholder="联系电话"
             />
           </div>
@@ -254,6 +262,7 @@
 import qiniuUplad from '@/components/pic-upload/qiniu-upload'
 import VDistpicker from 'v-distpicker'
 import videoUplad from '@/components/video-upload/video-upload'
+import { validateNotNull } from '../../../validate'
 import {
   getCompanyInfo,
   createdCompanyInfo
@@ -280,9 +289,11 @@ export default {
       customerServicePhone: [],
       detailAddress: '',
       companyInfo: {},
+      outletsRequests: [],
       form: {
         address: '',
         tel: '',
+        url: '',
         introduction: '',
         outletsRequests: [],
         companyZizi: [],
@@ -291,6 +302,15 @@ export default {
       }
     }
   },
+  // watch: {
+  //   isEdit(data) {
+  //     if (data) {
+  //       this.metaHandle('add')
+  //     } else {
+  //       this.metaHandle()
+  //     }
+  //   }
+  // },
   mounted() {
     this.getCompanyInfo()
   },
@@ -303,9 +323,9 @@ export default {
       }
     },
     addRequest() {
-      this.form.outletsRequests.push({
+      this.outletsRequests.push({
         outletsName: '',
-        phone: '',
+        tel: '',
         address: ''
       })
     },
@@ -323,7 +343,7 @@ export default {
         const res = await getCompanyInfo()
         this.companyInfo = res.data
         this.video = [this.companyInfo.videoUrl]
-        this.form.companyZizi = this.companyInfo.companyZizi
+        this.form.companyZizi = this.companyInfo.companyZizi || []
         this.detailAddress = this.companyInfo.address
         this.form.introduction = this.companyInfo.introduction
         this.form.contactPerson = this.companyInfo.contactPerson
@@ -334,19 +354,34 @@ export default {
         // logoList
         // outletsRequests
         this.customerServicePhone = []
-        this.form.outletsRequests = []
+        this.outletsRequests = []
         for (let key in this.companyInfo.customerServicePhone) {
           this.customerServicePhone.push([key, this.companyInfo.customerServicePhone[key]])
         }
         this.companyInfo.outletsRequests.forEach(item => {
-          this.form.outletsRequests.push({
+          this.outletsRequests.push({
             outletsName: item.outletsName,
-            phone: item.phone,
+            tel: item.phone,
             address: item.address
           })
         })
       } catch (e) {
         console.log(e)
+      }
+    },
+    metaHandle(type) {
+      if (type === 'add') {
+        const descriptionEl = document.createElement('meta')
+        descriptionEl.content = 'upgrade-insecure-requests'
+        descriptionEl['http-equiv'] = 'Content-Security-Policy'
+        document.head.appendChild(descriptionEl)
+      } else {
+        const metas = document.getElementsByTagName('meta')
+        for (let i = 0; i < metas.length; i++) {
+          if (metas[i]['http-equiv']) {
+            metas[i].remove()
+          }
+        }
       }
     },
     onSelect(data) {
@@ -360,7 +395,19 @@ export default {
         customerServicePhone[item[0]] = item[1]
       })
       this.form.address = `${this.address.province}${this.address.city}${this.address.area}${this.detailAddress}`
+      this.form.outletsRequests = this.outletsRequests.map(item => {
+        const obj = {
+          outletsName: item.outletsName,
+          phone: item.tel,
+          address: item.address
+        }
+        return obj
+      })
+      this.form.outletsRequests = this.form.outletsRequests.length ? this.form.outletsRequests : null
       try {
+        await validateNotNull(this.form.companyZizi, '公司资质不能为空')
+        // await validateNotNull(this.form.outletsRequests, '网点不能为空')
+        await validateNotNull(this.customerServicePhone, '客服不能为空')
         await createdCompanyInfo({
           ...this.form,
           videoUrl: this.video[0],

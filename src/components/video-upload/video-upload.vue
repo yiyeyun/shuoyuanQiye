@@ -20,6 +20,7 @@
       :on-error="uploadError"
       :on-success="uploadSuccess"
       :before-remove="beforeRemove"
+      :on-preview="handlePictureCardPreview"
       :before-upload="beforeAvatarUpload"
       :limit="limit"
       multiple
@@ -35,6 +36,9 @@
       <!--<el-button size="small" type="primary">选择图片</el-button>-->
       <slot />
     </el-upload>
+    <el-dialog :visible.sync="dialogVisible">
+      <video id="video" width="100%" :src="dialogImageUrl" controls />
+    </el-dialog>
   </div>
 </template>
 
@@ -61,11 +65,13 @@ export default {
   data() {
     return {
       loading: false,
+      dialogVisible: false,
+      dialogImageUrl: '',
       QiniuData: {
         key: '', // 图片名字处理
         token: '' // 七牛云token
       },
-      domain: 'http://up-z2.qiniup.com', // 七牛云的上传地址（华南区）
+      domain: 'https://upload-z2.qiniup.com', // 七牛云的上传地址（华南区）
       // qiniuaddr: 'http://pze6q2d92.bkt.clouddn.com', // 七牛云的图片外链地址
       qiniuaddr: 'http://cdn.bjd33.cn', // 七牛云的图片外链地址
       uploadPicUrl: '', // 提交到后台图片地址,
@@ -82,6 +88,7 @@ export default {
     //   })
     // }
   },
+
   watch: {
     fileList(data) {
       console.log('img', data)
@@ -96,6 +103,12 @@ export default {
           }
         })
       }
+    },
+    dialogVisible(data) {
+      if (!data) {
+        const video = document.getElementById('video')
+        video.pause()
+      }
     }
   },
   mounted() {
@@ -108,6 +121,10 @@ export default {
     })
   },
   methods: {
+    handlePictureCardPreview(file) {
+      this.dialogImageUrl = file.url
+      this.dialogVisible = true
+    },
     handleRemove(file, fileList) {
       const removePicUrl = `${this.qiniuaddr}/${file.response.key}`
       console.log('remove', file, fileList)
