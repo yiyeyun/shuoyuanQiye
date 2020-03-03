@@ -57,7 +57,13 @@
           <!--<el-menu-item index="/code-list">码包管理</el-menu-item>-->
           <el-menu-item index="/goods-list">商品列表</el-menu-item>
         </el-submenu>
-
+        <el-menu-item index="/suyuan-manage">
+          <template slot="title">
+            <i class="el-icon-tickets" />
+            <span>溯源管理</span>
+          </template>
+          <!--<el-menu-item index="/account">客户列表</el-menu-item>-->
+        </el-menu-item>
         <!--公共-->
         <el-menu-item index="/setting">
           <template slot="title">

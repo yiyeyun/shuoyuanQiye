@@ -45,7 +45,6 @@ export function selectProductSuyuan(id) {
 }
 
 export function createdOrUpdatedProductSuyuan(data) {
-  console.log(data)
   return request({
     url: `product/createdOrUpdatedProductSuyuan`,
     method: 'post',

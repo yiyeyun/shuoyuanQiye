@@ -82,7 +82,7 @@
               :key="item"
               class="mt10 flex"
             >
-              <div class="width-100 mr10">{{ index }}</div>
+              <div class="width-150 mr10">{{ index }}</div>
               <div>{{ item }}</div>
             </div>
           </div>
@@ -405,7 +405,7 @@ export default {
       })
       this.form.outletsRequests = this.form.outletsRequests.length ? this.form.outletsRequests : null
       try {
-        await validateNotNull(this.form.companyZizi, '公司资质不能为空')
+        // await validateNotNull(this.form.companyZizi, '公司资质不能为空')
         // await validateNotNull(this.form.outletsRequests, '网点不能为空')
         await validateNotNull(this.customerServicePhone, '客服不能为空')
         await createdCompanyInfo({
@@ -436,6 +436,9 @@ export default {
       this.form.companyZizi = this.removePicHandle(e[0], this.form.companyZizi)
     },
     logoPicUpload1(e) {
+      if (!this.form.logoList) {
+        this.form.logoList = []
+      }
       this.form.logoList.push(e[0])
     },
     logoPicRemove1(e) {
@@ -457,6 +460,9 @@ export default {
     width: 60px;
     height: 60px;
     margin: 0 5px;
+  }
+  .width-150{
+    width: 150px;
   }
   .box{
     border-radius: 10px;

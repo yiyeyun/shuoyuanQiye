@@ -55,6 +55,10 @@ export default new Router({
         {
           path: '/suyuan-list',
           component: () => import('../views/source/suyuan')
+        },
+        {
+          path: '/suyuan-manage',
+          component: () => import('../views/qiye/suyuan-manage')
         }
       ]
     }

@@ -26,9 +26,9 @@
           :area="address.area"
           @selected="onSelect"
         />
-        <div class="mt20">
-          <el-input v-model="detailAddress" placeholder="请输入详细地址" />
-        </div>
+        <!--<div class="mt20">-->
+          <!--<el-input v-model="detailAddress" placeholder="请输入详细地址" />-->
+        <!--</div>-->
       </div>
 
 
